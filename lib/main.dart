@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-
-import 'destination.dart';
-import 'destination_view.dart';
+import 'package:manga_reader/pages/browse_page.dart';
+import 'package:manga_reader/pages/collection_page.dart';
+import 'package:manga_reader/pages/history_page.dart';
+import 'package:manga_reader/pages/settings_page.dart';
+import 'package:manga_reader/pages/updates_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,54 +14,83 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Manga Reader',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
-      ),
-      home: HomePage(title: 'Flutter Demo Home Page'),
+          primaryColor: Colors.grey[850],
+          visualDensity: VisualDensity.adaptivePlatformDensity,
+          scaffoldBackgroundColor: Colors.grey[800]),
+      home: HomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key, this.title, Destination destination})
-      : super(key: key);
-  final String title;
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage>
-    with TickerProviderStateMixin<HomePage> {
-  int _currentIndex = 0;
+class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _widgetOptions = <Widget>[
+    CollectionPage(),
+    UpdatesPage(),
+    HistoryPage(),
+    BrowsePage(),
+    SettingsPage()
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        top: false,
-        child: IndexedStack(
-          index: _currentIndex,
-          children: allDestinations.map<Widget>((Destination destination) {
-            return DestinationView(destination: destination);
-          }).toList(),
-        ),
+      body: Center(
+        child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: allDestinations.map((Destination destination) {
-          return BottomNavigationBarItem(
-              icon: Icon(destination.icon),
-              backgroundColor: destination.color,
-              title: Text(destination.title));
-        }).toList(),
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(
+          // sets the background color of the `BottomNavigationBar`
+          canvasColor: Colors.grey[850],
+          // sets the active color of the `BottomNavigationBar` if `Brightness` is light
+          primaryColor: Colors.red,
+          textTheme: Theme.of(context).textTheme.copyWith(
+                caption: new TextStyle(color: Colors.grey),
+              ),
+        ), // sets the inactive color of the `BottomNavigationBar`
+        child: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.collections_bookmark),
+              title: Text('Collection'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.update),
+              title: Text('Updates'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history),
+              title: Text('History'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.open_in_browser),
+              title: Text('Browse'),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings),
+              title: Text('Settings'),
+            ),
+          ],
+          type: BottomNavigationBarType.fixed,
+          currentIndex: _selectedIndex,
+          selectedItemColor: Colors.white,
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }

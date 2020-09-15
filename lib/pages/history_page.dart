@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:manga_reader/destination.dart';
 
 class HistoryPage extends StatefulWidget {
-  HistoryPage({Key key, Destination destination}) : super(key: key);
-
   @override
   _HistoryPageState createState() => _HistoryPageState();
 }
@@ -11,6 +8,16 @@ class HistoryPage extends StatefulWidget {
 class _HistoryPageState extends State<HistoryPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("History"),
+      ),
+      body: Center(
+        child: Text(
+          "History...",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
   }
 }

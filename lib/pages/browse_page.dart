@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:manga_reader/destination.dart';
 
 class BrowsePage extends StatefulWidget {
-  BrowsePage({Key key, Destination destination}) : super(key: key);
-
   @override
   _BrowsePageState createState() => _BrowsePageState();
 }
@@ -11,6 +8,16 @@ class BrowsePage extends StatefulWidget {
 class _BrowsePageState extends State<BrowsePage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Browse"),
+      ),
+      body: Center(
+        child: Text(
+          "Manga...",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+    );
   }
 }
